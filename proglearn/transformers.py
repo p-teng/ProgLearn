@@ -250,3 +250,51 @@ class TreeRegressionTransformer(BaseTransformer):
         """
 
         return self._is_fitted
+
+    
+class RandomTransformer(BaseTransformer):
+    def __init__(self, kwargs={}):
+        """
+        Doc strings here.
+        """
+
+        self.kwargs = kwargs
+
+        self._is_fitted = False
+
+    def fit(self, X, y):
+        """
+        Doc strings here.
+        """
+
+        X, y = check_X_y(X, y)
+
+        # define the ensemble
+        self.transformer = DecisionTreeRegressor(**self.kwargs).fit(X, y)
+
+        self._is_fitted = True
+
+        return self
+
+    def transform(self, X):
+        """
+        Doc strings here.
+        """
+
+        if not self.is_fitted():
+            msg = (
+                "This %(name)s instance is not fitted yet. Call 'fit' with "
+                "appropriate arguments before using this transformer."
+            )
+            raise NotFittedError(msg % {"name": type(self).__name__})
+
+        X = check_array(X)
+        max_depth = self.kwargs['max_depth']
+        return np.random.randint(low=0, high=2**(max_depth - 1), size=len(X))
+
+    def is_fitted(self):
+        """
+        Doc strings here.
+        """
+
+        return self._is_fitted
