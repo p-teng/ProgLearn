@@ -1,9 +1,10 @@
-'''
+"""
 Main Author: Will LeVine 
 Corresponding Email: levinewill@icloud.com
-'''
+"""
 import numpy as np
 from .base import ClassificationDecider, ClassificationProgressiveLearner
+
 
 class ProgressiveLearner(ClassificationProgressiveLearner):
     """
@@ -39,6 +40,7 @@ class ProgressiveLearner(ClassificationProgressiveLearner):
         progressive learner defaults if None is provided in any of the functions 
         which add or set deciders.
     """
+
     def __init__(
         self,
         default_transformer_class=None,
@@ -312,8 +314,12 @@ class ProgressiveLearner(ClassificationProgressiveLearner):
         X, y = self.task_id_to_X[task_id], self.task_id_to_y[task_id]
 
         self.task_id_to_decider[task_id] = decider_class(**decider_kwargs)
+        decider_idx = self.task_id_to_decider_idx[task_id]
         self.task_id_to_decider[task_id].fit(
-            X, y, transformer_id_to_transformers, transformer_id_to_voters
+            X[decider_idx],
+            y[decider_idx],
+            transformer_id_to_transformers,
+            transformer_id_to_voters,
         )
 
         self.task_id_to_decider_class[task_id] = decider_class
