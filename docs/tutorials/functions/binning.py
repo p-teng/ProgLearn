@@ -1,6 +1,8 @@
 import numpy as np
 import math
 from sklearn.preprocessing import KBinsDiscretizer
+import pandas as pd
+from sklearn.datasets import load_breast_cancer
 
 def KBinsDiscretize(data_x, n_bins=0, alpha=3.322, encode="ordinal", strategy="uniform"):
     """
